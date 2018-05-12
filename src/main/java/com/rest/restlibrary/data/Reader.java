@@ -5,47 +5,45 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "Readers")
+@Table(name = "reader")
 public class Reader {
+
     @Id
-    @NotNull
     @GeneratedValue
+    @NotNull
     private long id;
 
     @Column(name = "first_name")
     private String firstName;
+
     @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "birth_date")
-    @Basic
-    private Date birthDate;
+    private LocalDate birthDate;
 
-    @OneToMany(
-            targetEntity = Copy.class,
-            mappedBy = "reader",
-            //cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
-    )
-    private List<Copy> borrowedCopies;
+    @ManyToMany
+//            (cascade = CascadeType.ALL)
+    @JoinTable(name = "join_borrow_reader",
+            joinColumns = @JoinColumn(name = "borrow_id"),
+            inverseJoinColumns = @JoinColumn(name = "reader_id"))
+    private List<Borrow> borrows;
 
-    public Reader(String firstName, String lastName, java.sql.Date birthDate) {
+    public Reader(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        borrowedCopies = new ArrayList<>();
+        borrows = new ArrayList<>();
     }
 
-    public void setBorrowedCopies(Copy copy) {
-        copy.setIsBorrowed();
-        borrowedCopies.add(copy);
-
+    public void addBorrow(Borrow borrow) {
+        borrows.add(borrow);
     }
 }

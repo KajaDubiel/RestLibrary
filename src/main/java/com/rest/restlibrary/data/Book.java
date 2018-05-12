@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,48 +12,43 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "Books")
+@Table(name = "book")
 public class Book {
-    @Id
-    @NotNull
-    @GeneratedValue
-    private long id;
 
-    @Column(name = "author")
-    private String author;
+    @Id
+    @GeneratedValue
+    @NotNull
+    private long id;
 
     @Column(name = "title")
     private String title;
 
+    @Column(name = "author")
+    private String author;
+
     @Column(name = "release_year")
     private int releaseYear;
 
-    @Column(name = "copies")
+    @Column(name = "isbn")
+    private String isbn;
+
     @OneToMany(
             targetEntity = Copy.class,
             mappedBy = "book",
-            //cascade = CascadeType.ALL,
+            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
     private List<Copy> copies;
 
-
-    public Book(String author, String title, int releaseYear) {
-        this.author = author;
+    public Book(String title, String author, int releaseYear, String isbn) {
         this.title = title;
+        this.author = author;
         this.releaseYear = releaseYear;
-        copies = new ArrayList<>();
+        this.isbn = isbn;
+        this.copies = new ArrayList<>();
     }
 
-    public void setCopy(Copy copy) {
+    public void addCopy(Copy copy) {
         copies.add(copy);
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public long getId() {
-        return id;
     }
 }

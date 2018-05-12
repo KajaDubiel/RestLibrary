@@ -1,55 +1,54 @@
 package com.rest.restlibrary.data;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "Copies")
+@Table(name = "copy")
 public class Copy {
+
     @Id
-    @NotNull
     @GeneratedValue
+    @NotNull
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Column(name = "isbn")
-    private String isbn;
+    @Column(name = "inventory_number")
+    private String inventoryNumber;
 
-    @Column(name = "is_borrowed")
-    private boolean borrowed;
+    @Column
+    private boolean isBorrowed;
 
-    @ManyToOne
-    @JoinColumn(name = "reader_id")
-    private Reader reader;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "join_borrow_copy",
+            joinColumns = @JoinColumn(name = "borrow_id"),
+            inverseJoinColumns = @JoinColumn(name = "copy_id")
+    )
+    private List<Borrow> borrows;
 
-    @ManyToOne
-    @JoinColumn(name = "borrowingId")
-    private Borrowing borrowing;
-
-    public Copy(Book book, String isbn) {
+    public Copy(Book book, String inventoryNumber) {
         this.book = book;
-        this.isbn = isbn;
-        borrowed = false;
+        this.inventoryNumber = inventoryNumber;
+        isBorrowed = false;
+        borrows = new ArrayList<>();
     }
 
     public void setIsBorrowed() {
-        this.borrowed = true;
+        isBorrowed = true;
     }
 
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
-
-    public void setBorrowing(Borrowing borrowing) {
-        this.borrowing = borrowing;
+    public void addBorrow(Borrow borrow) {
+        borrows.add(borrow);
     }
 }

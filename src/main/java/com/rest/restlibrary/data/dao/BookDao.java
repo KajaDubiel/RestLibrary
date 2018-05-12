@@ -8,6 +8,5 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Repository
-public interface BookDao extends CrudRepository<Book, Long> {
-
+public interface BookDao extends CrudRepository<Book, Long>{
 }

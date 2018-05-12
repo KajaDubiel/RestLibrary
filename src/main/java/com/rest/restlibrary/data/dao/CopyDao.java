@@ -8,5 +8,5 @@ import javax.transaction.Transactional;
 
 @Transactional
 @Repository
-public interface CopyDao extends CrudRepository<Copy, Long> {
+public interface CopyDao extends CrudRepository<Copy, Long>{
 }
