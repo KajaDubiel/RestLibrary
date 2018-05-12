@@ -29,19 +29,14 @@ public class Copy {
     @Column
     private boolean isBorrowed;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "join_borrow_copy",
-            joinColumns = @JoinColumn(name = "borrow_id"),
-            inverseJoinColumns = @JoinColumn(name = "copy_id")
-    )
-    private List<Borrow> borrows;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "borrow_id")
+    private Borrow borrow;
 
     public Copy(Book book, String inventoryNumber) {
         this.book = book;
         this.inventoryNumber = inventoryNumber;
         isBorrowed = false;
-        borrows = new ArrayList<>();
     }
 
     public void setIsBorrowed() {
@@ -49,6 +44,6 @@ public class Copy {
     }
 
     public void addBorrow(Borrow borrow) {
-        borrows.add(borrow);
+        this.borrow = borrow;
     }
 }

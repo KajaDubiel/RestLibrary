@@ -77,13 +77,14 @@ public class DaosTestSuite {
         copy.addBorrow(borrow);
         borrow.addReader(reader);
         reader.addBorrow(borrow);
+        bookDao.save(book);
 
         //When
-        bookDao.save(book);
         readerDao.save(reader);
 
         long bookId = book.getId();
         long readerId = reader.getId();
+
         //Then
         Assert.assertEquals(readerId, readerDao.findOne(readerId).getId());
 
@@ -104,9 +105,10 @@ public class DaosTestSuite {
         Borrow borrow = new Borrow();
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
-        bookDao.save(book);
+
 
         //When
+        bookDao.save(book);
         long borrowId = borrow.getId();
         long bookId = book.getId();
 

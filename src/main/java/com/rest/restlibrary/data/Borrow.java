@@ -24,10 +24,18 @@ public class Borrow {
 //    @Column(name = "from")
 //    private LocalDate from;
 
-    @ManyToMany(mappedBy = "borrows")
+    @OneToMany(
+            targetEntity = Copy.class,
+            mappedBy = "borrow",
+            fetch = FetchType.EAGER
+    )
     private List<Copy> copies = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "borrows")
+    @OneToMany(
+            targetEntity = Copy.class,
+            mappedBy = "borrow",
+            fetch = FetchType.EAGER
+    )
     private List<Reader> readers = new ArrayList<>();
 
 //    public Borrow(LocalDate from) {

@@ -29,21 +29,18 @@ public class Reader {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @ManyToMany
+    @ManyToOne
 //            (cascade = CascadeType.ALL)
-    @JoinTable(name = "join_borrow_reader",
-            joinColumns = @JoinColumn(name = "borrow_id"),
-            inverseJoinColumns = @JoinColumn(name = "reader_id"))
-    private List<Borrow> borrows;
+   @JoinColumn(name = "borrow_id")
+    private Borrow borrow;
 
     public Reader(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
-        borrows = new ArrayList<>();
     }
 
     public void addBorrow(Borrow borrow) {
-        borrows.add(borrow);
+        this.borrow = borrow;
     }
 }
