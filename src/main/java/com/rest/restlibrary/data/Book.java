@@ -51,4 +51,30 @@ public class Book {
     public void addCopy(Copy copy) {
         copies.add(copy);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (id != book.id) return false;
+        if (releaseYear != book.releaseYear) return false;
+        if (!title.equals(book.title)) return false;
+        if (!author.equals(book.author)) return false;
+        if (!isbn.equals(book.isbn)) return false;
+        return copies != null ? copies.equals(book.copies) : book.copies == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + title.hashCode();
+        result = 31 * result + author.hashCode();
+        result = 31 * result + releaseYear;
+        result = 31 * result + isbn.hashCode();
+        result = 31 * result + (copies != null ? copies.hashCode() : 0);
+        return result;
+    }
 }

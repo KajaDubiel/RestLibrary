@@ -43,4 +43,28 @@ public class Reader {
     public void addBorrow(Borrow borrow) {
         this.borrow = borrow;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Reader reader = (Reader) o;
+
+        if (id != reader.id) return false;
+        if (!firstName.equals(reader.firstName)) return false;
+        if (!lastName.equals(reader.lastName)) return false;
+        if (!birthDate.equals(reader.birthDate)) return false;
+        return borrow != null ? borrow.equals(reader.borrow) : reader.borrow == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + birthDate.hashCode();
+        result = 31 * result + (borrow != null ? borrow.hashCode() : 0);
+        return result;
+    }
 }

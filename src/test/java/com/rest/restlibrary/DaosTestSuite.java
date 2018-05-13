@@ -6,6 +6,7 @@ import com.rest.restlibrary.data.Copy;
 import com.rest.restlibrary.data.Reader;
 import com.rest.restlibrary.data.dao.BookDao;
 import com.rest.restlibrary.data.dao.BorrowDao;
+import com.rest.restlibrary.data.dao.CopyDao;
 import com.rest.restlibrary.data.dao.ReaderDao;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,6 +29,9 @@ public class DaosTestSuite {
 
     @Autowired
     BorrowDao borrowDao;
+
+    @Autowired
+    CopyDao copyDao;
 
     @Test
     public void testPersistBook() {
@@ -101,7 +105,6 @@ public class DaosTestSuite {
 
         book.addCopy(copy);
 
-//      Borrow borrow = new Borrow(LocalDate.now());
         Borrow borrow = new Borrow();
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
@@ -119,4 +122,29 @@ public class DaosTestSuite {
         bookDao.delete(bookId);
     }
 
+    @Test
+    public void testReturnCopy() {
+        //Given
+        Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
+        Copy copy = new Copy(book, "20980428104");
+
+        book.addCopy(copy);
+
+        Borrow borrow = new Borrow();
+        borrow.addCopy(copy);
+        copy.addBorrow(borrow);
+        bookDao.save(book);
+        long borrowId = borrow.getId();
+        long bookId = book.getId();
+
+        //When
+        borrow.returnCopy(copy);
+        bookDao.save(book);
+
+        //Then
+        Assert.assertEquals(null, borrowDao.findOne(borrowId).getUntilDate());
+
+        //CleanUp
+        //bookDao.delete(bookId);
+    }
 }
