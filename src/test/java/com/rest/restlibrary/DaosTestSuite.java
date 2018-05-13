@@ -73,26 +73,30 @@ public class DaosTestSuite {
         //Given
         Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
         Copy copy = new Copy(book, "20980428104");
-        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(1970, 5, 12));
-        Borrow borrow = new Borrow();
-
         book.addCopy(copy);
+
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(1970, 5, 12));
+
+        Borrow borrow = new Borrow();
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
+
         borrow.addReader(reader);
         reader.addBorrow(borrow);
         bookDao.save(book);
 
         //When
         readerDao.save(reader);
-
+        borrowDao.save(borrow);
         long bookId = book.getId();
         long readerId = reader.getId();
+        long borrowId = borrow.getId();
 
         //Then
         Assert.assertEquals(readerId, readerDao.findOne(readerId).getId());
 
         //CleanUp
+        borrowDao.delete(borrowId);
         readerDao.delete(readerId);
         bookDao.delete(bookId);
     }
@@ -102,16 +106,16 @@ public class DaosTestSuite {
         //Given
         Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
         Copy copy = new Copy(book, "20980428104");
+        Borrow borrow = new Borrow();
 
         book.addCopy(copy);
-
-        Borrow borrow = new Borrow();
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
 
+        bookDao.save(book);
 
         //When
-        bookDao.save(book);
+        borrowDao.save(borrow);
         long borrowId = borrow.getId();
         long bookId = book.getId();
 
@@ -119,6 +123,7 @@ public class DaosTestSuite {
         Assert.assertEquals(borrowId, borrowDao.findOne(borrowId).getId());
 
         //CleanUp
+        borrowDao.delete(borrowId);
         bookDao.delete(bookId);
     }
 
@@ -127,24 +132,33 @@ public class DaosTestSuite {
         //Given
         Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
         Copy copy = new Copy(book, "20980428104");
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(1970, 5, 12));
+        Borrow borrow = new Borrow();
 
         book.addCopy(copy);
 
-        Borrow borrow = new Borrow();
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
+        reader.addBorrow(borrow);
+        borrow.addReader(reader);
+
         bookDao.save(book);
+        readerDao.save(reader);
+        borrowDao.save(borrow);
         long borrowId = borrow.getId();
         long bookId = book.getId();
+        long readerId = reader.getId();
 
         //When
-        borrow.returnCopy(copy);
-        bookDao.save(book);
+        borrow.returnCopy();
+        borrowDao.save(borrow);
 
         //Then
         Assert.assertEquals(null, borrowDao.findOne(borrowId).getUntilDate());
 
         //CleanUp
-        //bookDao.delete(bookId);
+        borrowDao.delete(borrowId);
+        readerDao.delete(readerId);
+        bookDao.delete(bookId);
     }
 }

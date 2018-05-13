@@ -29,19 +29,22 @@ public class Reader {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @ManyToOne
-//            (cascade = CascadeType.ALL)
-   @JoinColumn(name = "borrow_id")
-    private Borrow borrow;
+    @OneToMany(
+            targetEntity = Borrow.class,
+            mappedBy = "reader",
+            fetch = FetchType.EAGER
+    )
+    private List<Borrow> borrows;
 
     public Reader(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.borrows = new ArrayList<>();
     }
 
     public void addBorrow(Borrow borrow) {
-        this.borrow = borrow;
+        borrows.add(borrow);
     }
 
     @Override
@@ -55,7 +58,7 @@ public class Reader {
         if (!firstName.equals(reader.firstName)) return false;
         if (!lastName.equals(reader.lastName)) return false;
         if (!birthDate.equals(reader.birthDate)) return false;
-        return borrow != null ? borrow.equals(reader.borrow) : reader.borrow == null;
+        return borrows != null ? borrows.equals(reader.borrows) : reader.borrows == null;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class Reader {
         result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
         result = 31 * result + birthDate.hashCode();
-        result = 31 * result + (borrow != null ? borrow.hashCode() : 0);
+        result = 31 * result + (borrows != null ? borrows.hashCode() : 0);
         return result;
     }
 }

@@ -26,25 +26,21 @@ public class Copy {
     @Column(name = "inventory_number")
     private String inventoryNumber;
 
-//    @Column
-//    private boolean isBorrowed;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "borrow_id")
-    private Borrow borrow;
+    @OneToMany(
+            targetEntity = Borrow.class,
+            mappedBy = "copy",
+            fetch = FetchType.EAGER)
+    private List<Borrow> borrows;
 
     public Copy(Book book, String inventoryNumber) {
         this.book = book;
         this.inventoryNumber = inventoryNumber;
-        //isBorrowed = false;
+        this.borrows = new ArrayList<>();
     }
 
-//    public void setIsBorrowed() {
-//        isBorrowed = true;
-//    }
-
     public void addBorrow(Borrow borrow) {
-        this.borrow = borrow;
+        borrows.add(borrow);
     }
 
     @Override
@@ -57,7 +53,7 @@ public class Copy {
         if (id != copy.id) return false;
         if (!book.equals(copy.book)) return false;
         if (!inventoryNumber.equals(copy.inventoryNumber)) return false;
-        return borrow != null ? borrow.equals(copy.borrow) : copy.borrow == null;
+        return borrows != null ? borrows.equals(copy.borrows) : copy.borrows == null;
     }
 
     @Override
@@ -65,7 +61,7 @@ public class Copy {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + book.hashCode();
         result = 31 * result + inventoryNumber.hashCode();
-        result = 31 * result + (borrow != null ? borrow.hashCode() : 0);
+        result = 31 * result + (borrows != null ? borrows.hashCode() : 0);
         return result;
     }
 }
