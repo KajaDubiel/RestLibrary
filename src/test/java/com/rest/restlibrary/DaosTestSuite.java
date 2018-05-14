@@ -73,17 +73,18 @@ public class DaosTestSuite {
         //Given
         Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
         Copy copy = new Copy(book, "20980428104");
-        book.addCopy(copy);
-
+        Borrow borrow = new Borrow();
         Reader reader = new Reader("Adam", "Nowak", LocalDate.of(1970, 5, 12));
 
-        Borrow borrow = new Borrow();
+        book.addCopy(copy);
+
         borrow.addCopy(copy);
         copy.addBorrow(borrow);
 
         borrow.addReader(reader);
         reader.addBorrow(borrow);
         bookDao.save(book);
+        copyDao.save(copy);
 
         //When
         readerDao.save(reader);
@@ -91,6 +92,7 @@ public class DaosTestSuite {
         long bookId = book.getId();
         long readerId = reader.getId();
         long borrowId = borrow.getId();
+        long copyId = copy.getId();
 
         //Then
         Assert.assertEquals(readerId, readerDao.findOne(readerId).getId());
@@ -98,6 +100,7 @@ public class DaosTestSuite {
         //CleanUp
         borrowDao.delete(borrowId);
         readerDao.delete(readerId);
+        copyDao.delete(copyId);
         bookDao.delete(bookId);
     }
 
@@ -113,17 +116,19 @@ public class DaosTestSuite {
         copy.addBorrow(borrow);
 
         bookDao.save(book);
-
+        copyDao.save(copy);
         //When
         borrowDao.save(borrow);
         long borrowId = borrow.getId();
         long bookId = book.getId();
+        long copyId = copy.getId();
 
         //Then
         Assert.assertEquals(borrowId, borrowDao.findOne(borrowId).getId());
 
         //CleanUp
         borrowDao.delete(borrowId);
+        copyDao.delete(copyId);
         bookDao.delete(bookId);
     }
 
@@ -143,11 +148,14 @@ public class DaosTestSuite {
         borrow.addReader(reader);
 
         bookDao.save(book);
+        copyDao.save(copy);
         readerDao.save(reader);
         borrowDao.save(borrow);
-        long borrowId = borrow.getId();
+
         long bookId = book.getId();
+        long copyId = copy.getId();
         long readerId = reader.getId();
+        long borrowId = borrow.getId();
 
         //When
         borrow.returnCopy();
@@ -159,6 +167,7 @@ public class DaosTestSuite {
         //CleanUp
         borrowDao.delete(borrowId);
         readerDao.delete(readerId);
+        copyDao.delete(copyId);
         bookDao.delete(bookId);
     }
 }

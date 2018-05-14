@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "borrow")
@@ -34,6 +36,11 @@ public class Borrow {
     @JoinColumn(name = "reader_id")
     private Reader reader;
 
+    public Borrow(Reader reader, Copy copy){
+        this.reader = reader;
+        this.copy = copy;
+    }
+
     public void addCopy(Copy copy) {
            this.copy = copy;
     }
@@ -50,6 +57,5 @@ public class Borrow {
     public void addReader(Reader reader) {
         this.reader = reader;
     }
-
 
 }

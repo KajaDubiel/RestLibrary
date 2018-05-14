@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -53,5 +55,60 @@ public class ReaderServiceTestSuite {
 
         //CleanUp
         readerDao.delete(readerId);
+    }
+
+    @Test
+    public void testGetReaders(){
+        //Given
+        Reader reader1 = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
+        Reader reader2 = new Reader("Tomasz", "Nowak", LocalDate.of(1961, 5, 2));
+
+        readerDao.save(reader1);
+        readerDao.save(reader2);
+
+        //When
+        List<Reader> returnedReaders = readerService.getReaders();
+
+        //Then
+        Assert.assertEquals(2, returnedReaders.size());
+
+        //CleanUp
+        readerDao.delete(reader1);
+        readerDao.delete(reader2);
+    }
+
+    @Test
+    public void testUpdateReader(){
+        //Given
+        Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
+
+        readerDao.save(reader);
+        long readerId = reader.getId();
+
+        Reader updatedReader = new Reader(readerId,"AdamUpdated", "Kowalski", LocalDate.of(1967, 4, 12), new ArrayList<>());
+
+        //When
+        readerService.updateReader(updatedReader);
+
+        //Then
+        Assert.assertEquals("AdamUpdated", readerDao.findOne(readerId).getFirstName());
+
+        //CleanUp
+        readerDao.delete(readerId);
+    }
+
+    @Test
+    public void testDeleteReader(){
+        //Given
+        Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
+
+        readerDao.save(reader);
+        long readerId = reader.getId();
+
+        //When
+        readerService.deleteReader(readerId);
+
+        //Then
+        Assert.assertNull(readerDao.findOne(readerId));
     }
 }
