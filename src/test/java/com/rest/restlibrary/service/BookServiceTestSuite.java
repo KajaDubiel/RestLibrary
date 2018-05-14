@@ -1,6 +1,5 @@
 package com.rest.restlibrary.service;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.rest.restlibrary.data.Book;
 import com.rest.restlibrary.data.dao.BookDao;
 import org.junit.Assert;
@@ -29,7 +28,7 @@ public class BookServiceTestSuite {
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
 
         //When
-        bookService.saveBook(book);
+        bookService.createBook(book);
         long bookId = book.getId();
 
         //Then
@@ -43,7 +42,7 @@ public class BookServiceTestSuite {
     public void getBook(){
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
-        bookService.saveBook(book);
+        bookService.createBook(book);
         long bookId = book.getId();
 
         //When

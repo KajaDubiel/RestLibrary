@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "copy")
@@ -43,25 +45,5 @@ public class Copy {
         borrows.add(borrow);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Copy copy = (Copy) o;
-
-        if (id != copy.id) return false;
-        if (!book.equals(copy.book)) return false;
-        if (!inventoryNumber.equals(copy.inventoryNumber)) return false;
-        return borrows != null ? borrows.equals(copy.borrows) : copy.borrows == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + book.hashCode();
-        result = 31 * result + inventoryNumber.hashCode();
-        result = 31 * result + (borrows != null ? borrows.hashCode() : 0);
-        return result;
-    }
 }

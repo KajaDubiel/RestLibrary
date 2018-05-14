@@ -13,7 +13,7 @@ public class BookService {
     @Autowired
     BookDao bookDao;
 
-    public void saveBook(Book book){
+    public void createBook(Book book){
         bookDao.save(book);
     }
 
