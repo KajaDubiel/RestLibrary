@@ -26,15 +26,18 @@ public class BorrowService {
         return borrowDao.findAll();
     }
 
-    //HERE
     public List<Borrow> getActiveBorrows(){
         return borrowDao.findAll().stream()
                 .filter(b -> b.getUntilDate() != null)
                 .collect(Collectors.toList());
     }
 
-    //pytanie czy ta metoda będzie potrzebna?
     public void updateBorrow(Borrow borrow){
+        borrowDao.save(borrow);
+    }
+
+    public void returnBorrow(Borrow borrow){
+        borrow.returnCopy();
         borrowDao.save(borrow);
     }
 

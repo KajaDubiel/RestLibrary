@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,11 +39,20 @@ public class Book {
             targetEntity = Copy.class,
             mappedBy = "book",
             //cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     private List<Copy> copies;
 
     public Book(String title, String author, int releaseYear, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.releaseYear = releaseYear;
+        this.isbn = isbn;
+        this.copies = new ArrayList<>();
+    }
+
+    public Book(long id, String title, String author, int releaseYear, String isbn) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.releaseYear = releaseYear;

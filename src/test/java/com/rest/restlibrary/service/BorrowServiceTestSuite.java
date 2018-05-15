@@ -35,13 +35,13 @@ public class BorrowServiceTestSuite {
     @Autowired
     private BorrowService borrowService;
 
-    Book book;
-    Copy copy;
-    Reader reader;
-    Borrow borrow;
-    long copyId;
-    long bookId;
-    long readerId;
+    private Book book;
+    private Copy copy;
+    private Reader reader;
+    private Borrow borrow;
+    private long copyId;
+    private long bookId;
+    private long readerId;
 
     @Before
     public void initialize(){
@@ -58,8 +58,8 @@ public class BorrowServiceTestSuite {
         copyId = copy.getId();
         readerId = reader.getId();
     }
-
-    @After
+//
+//    @After
     public void cleanUp(){
         readerDao.delete(readerId);
         copyDao.delete(copyId);
@@ -81,6 +81,7 @@ public class BorrowServiceTestSuite {
 
         //CleanUp
         borrowDao.delete(bookId);
+
 
     }
 
@@ -115,7 +116,7 @@ public class BorrowServiceTestSuite {
     }
 
     //HERE
-    @Ignore
+    //@Ignore
     @Test
     public void testGetActiveBorrows(){
         //Given
@@ -127,15 +128,25 @@ public class BorrowServiceTestSuite {
         bookDao.save(book2);
         copyDao.save(copy2);
         readerDao.save(reader2);
+        borrowDao.save(borrow);
+        borrowDao.save(borrow2);
+
+        long borrowId1 = borrow.getId();
+        long borrowId2 = borrow2.getId();
+
+        borrow2.returnCopy();
+        System.out.println(borrow2.getUntilDate());
         borrowDao.save(borrow2);
 
         //When
-        borrow2.returnCopy();
-
-        //Then
         List<Borrow> returnedBorrows = borrowService.getActiveBorrows();
 
+        //Then
         Assert.assertEquals(1, returnedBorrows.size());
+
+        //CleanUp
+        borrowDao.delete(borrowId1);
+        borrowDao.delete(borrowId2);
     }
 
     @Test
@@ -167,5 +178,18 @@ public class BorrowServiceTestSuite {
         //Then
         Assert.assertNull(borrowDao.findOne(borrowId));
 
+    }
+
+    @Test
+    public void testReturnBorrow(){
+        //Given
+        borrowDao.save(borrow);
+        long borrowId = borrow.getId();
+
+        //When
+        borrowService.returnBorrow(borrow);
+
+        //Then
+        Assert.assertNull(borrowDao.findOne(borrowId).getUntilDate());
     }
 }
