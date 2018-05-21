@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Copy {
     @NotNull
     private long id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
@@ -30,10 +32,11 @@ public class Copy {
     private String inventoryNumber;
 
 
+    @JsonIgnore
     @OneToMany(
             targetEntity = Borrow.class,
             mappedBy = "copy",
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)//lazy
     private List<Borrow> borrows;
 
     public Copy(Book book, String inventoryNumber) {

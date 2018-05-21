@@ -1,6 +1,6 @@
 package com.rest.restlibrary.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +9,28 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+
+//@NamedNativeQueries({
+//        @NamedNativeQuery(
+//                name = "Book.retrieveBooks",
+//                query = "select b.author, b.title, b.release_year, b.isbn, copy.id, copy.inventory_number " +
+//                        "from book b " +
+//                        "right join copy " +
+//                        "on b.id = copy.book_id;",
+//                resultClass = Book.class
+//        )
+//,
+//
+//        @NamedNativeQuery(
+//                name = "Book.retrieveOneBookById",
+//                query = "select b.author, b.title, b.release_year, b.isbn, copy.id, copy.inventory_number " +
+//                        "from book b " +
+//                        "right join copy " +
+//                        "on b.id = copy.book_id " +
+//                        "where b.id = 5;",
+//                resultClass = Book.class
+//        )
+//})
 
 
 @NoArgsConstructor
@@ -35,11 +57,11 @@ public class Book {
     @Column(name = "isbn")
     private String isbn;
 
+    @JsonIgnore
     @OneToMany(
             targetEntity = Copy.class,
             mappedBy = "book",
-            //cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Copy> copies;
 

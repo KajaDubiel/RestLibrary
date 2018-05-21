@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -170,4 +172,32 @@ public class DaosTestSuite {
         copyDao.delete(copyId);
         bookDao.delete(bookId);
     }
+
+//    @Test
+//    public void testNativeQueryRetrieveBooks(){
+//        //Given
+//        Book book = new Book("Pan Tadeusz", "Adam Mickiewicz", 1978, "893723481");
+//        Copy copy = new Copy(book, "20980428104");
+//        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(1970, 5, 12));
+//        Borrow borrow = new Borrow();
+//
+//        bookDao.save(book);
+//        copyDao.save(copy);
+//        readerDao.save(reader);
+//        borrowDao.save(borrow);
+//
+//        long bookId = book.getId();
+//        long copyId = copy.getId();
+//        long readerId = reader.getId();
+//        long borrowId = borrow.getId();
+//
+//        //When
+//        List<Book> retrievedBooks = bookDao.retrieveBooks();
+//        for(Book retBook: retrievedBooks){
+//            System.out.println(retBook.getTitle() + " " +  retBook.getAuthor() + retBook.getCopies().size());
+//        }
+
+    //}
+
+
 }

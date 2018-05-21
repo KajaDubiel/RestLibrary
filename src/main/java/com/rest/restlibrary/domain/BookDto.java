@@ -21,6 +21,9 @@ public class BookDto {
     private String author;
     private int releaseYear;
     private String isbn;
-    //private List<Copy> copies;
+    private List<Copy> copies;
+    //hql zapytanie np graf api
+    //select book from left join copy
+
 
 }
