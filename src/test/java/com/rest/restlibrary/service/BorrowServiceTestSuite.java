@@ -59,7 +59,7 @@ public class BorrowServiceTestSuite {
         readerId = reader.getId();
     }
 //
-//    @After
+   @After
     public void cleanUp(){
         readerDao.delete(readerId);
         copyDao.delete(copyId);
@@ -80,7 +80,7 @@ public class BorrowServiceTestSuite {
         Assert.assertEquals(borrowId, borrowDao.findOne(borrowId).getId());
 
         //CleanUp
-        borrowDao.delete(bookId);
+        borrowDao.delete(borrowId);
 
 
     }
@@ -126,8 +126,11 @@ public class BorrowServiceTestSuite {
         Borrow borrow2 = new Borrow(reader2, copy2);
 
         bookDao.save(book2);
+        long book2ID = book2.getId();
         copyDao.save(copy2);
+        long copy2ID = copy2.getId();
         readerDao.save(reader2);
+        long reader2ID = reader2.getId();
         borrowDao.save(borrow);
         borrowDao.save(borrow2);
 
@@ -147,6 +150,9 @@ public class BorrowServiceTestSuite {
         //CleanUp
         borrowDao.delete(borrowId1);
         borrowDao.delete(borrowId2);
+        readerDao.delete(reader2ID);
+        copyDao.delete(copy2ID);
+        bookDao.delete(book2ID);
     }
 
     @Test
@@ -191,5 +197,8 @@ public class BorrowServiceTestSuite {
 
         //Then
         Assert.assertNull(borrowDao.findOne(borrowId).getUntilDate());
+
+        //CleanUp
+        borrowDao.delete(borrowId);
     }
 }

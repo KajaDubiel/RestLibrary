@@ -32,6 +32,9 @@ public class Reader {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "email")
+    private String readerEmail;
+
     @OneToMany(
             targetEntity = Borrow.class,
             mappedBy = "reader",
@@ -44,6 +47,14 @@ public class Reader {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.borrows = new ArrayList<>();
+    }
+
+    public Reader(String firstName, String lastName, LocalDate birthDate, String readerEmail) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.borrows = new ArrayList<>();
+        this.readerEmail = readerEmail;
     }
 
     public void addBorrow(Borrow borrow) {

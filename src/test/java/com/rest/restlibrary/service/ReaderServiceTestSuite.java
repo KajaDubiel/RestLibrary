@@ -40,6 +40,22 @@ public class ReaderServiceTestSuite {
     }
 
     @Test
+    public void testCreateReaderWithEmail(){
+        //Given
+        Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12), "adam@kowalski");
+
+        //When
+        readerService.createReader(reader);
+        long readerId = reader.getId();
+
+        //Then
+        Assert.assertEquals(readerId, readerDao.findOne(readerId).getId());
+
+        //CleanUp
+        readerDao.delete(readerId);
+    }
+
+    @Test
     public void testGetReader(){
         //Given
         Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
@@ -65,6 +81,8 @@ public class ReaderServiceTestSuite {
 
         readerDao.save(reader1);
         readerDao.save(reader2);
+        long reader1ID = reader1.getId();
+        long reader2ID = reader2.getId();
 
         //When
         List<Reader> returnedReaders = readerService.getReaders();
@@ -73,8 +91,8 @@ public class ReaderServiceTestSuite {
         Assert.assertEquals(2, returnedReaders.size());
 
         //CleanUp
-        readerDao.delete(reader1);
-        readerDao.delete(reader2);
+        readerDao.delete(reader1ID);
+        readerDao.delete(reader2ID);
     }
 
     @Test
@@ -85,7 +103,7 @@ public class ReaderServiceTestSuite {
         readerDao.save(reader);
         long readerId = reader.getId();
 
-        Reader updatedReader = new Reader(readerId,"AdamUpdated", "Kowalski", LocalDate.of(1967, 4, 12), new ArrayList<>());
+        Reader updatedReader = new Reader(readerId,"AdamUpdated", "Kowalski", LocalDate.of(1967, 4, 12), "adam@kowalski", new ArrayList<>());
 
         //When
         readerService.updateReader(updatedReader);
