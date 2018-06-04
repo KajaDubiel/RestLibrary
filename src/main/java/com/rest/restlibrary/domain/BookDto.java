@@ -24,6 +24,4 @@ public class BookDto {
     private List<Copy> copies;
     //hql zapytanie np graf api
     //select book from left join copy
-
-
 }

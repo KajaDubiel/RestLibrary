@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class BookMapper {
     public Book mapToBook(final BookDto bookDto) {
-        return new Book(bookDto.getId(), bookDto.getTitle(), bookDto.getAuthor(), bookDto.getReleaseYear(), bookDto.getIsbn());
+        return new Book(bookDto.getId(), bookDto.getTitle(), bookDto.getAuthor(), bookDto.getReleaseYear(), bookDto.getIsbn(), bookDto.getCopies());
     }
 
     public BookDto mapToBookDto(final Book book){

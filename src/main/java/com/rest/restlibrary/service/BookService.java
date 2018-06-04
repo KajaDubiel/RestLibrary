@@ -29,29 +29,29 @@ public class BookService {
     @Autowired
     CopyDao copyDao;
 
-    public void createBook(Book book){
+    public void createBook(Book book) {
         bookDao.save(book);
     }
 
-    public Book getBook(long bookId){
+    public Book getBook(long bookId) {
         return bookDao.findOne(bookId);
     }
 
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks() {
         return bookDao.findAll();
     }
 
-    public void updateBook(Book book){
+    public void updateBook(Book book) {
         bookDao.save(book);
     }
 
-    public void deleteBook(long bookId){
+    public void deleteBook(long bookId) {
         boolean hasBookBorrowedCopies = checkBookCopiesAreBorrowed(bookId);
-        if(hasBookBorrowedCopies){
+        if (hasBookBorrowedCopies) {
             throw new RuntimeException("This book has borrowed copies, you can not delete");
         } else {
             List<Copy> copies = copyDao.findAllByBookId(bookId);
-            for(Copy copy: copies){
+            for (Copy copy : copies) {
                 borrowDao.deleteByCopyId(copy.getId());
                 copyDao.delete(copy.getId());
             }
@@ -59,29 +59,29 @@ public class BookService {
         }
     }
 
-    private boolean checkBookCopiesAreBorrowed(long bookId){
-       List<Copy> existingCopies = bookDao.findOne(bookId).getCopies();
-       List<Borrow> existingBorrows = new ArrayList<>();
-       if(existingCopies.isEmpty()){
-           return false;
-       } else {
-          for(Copy copy: existingCopies){
-              List<Borrow> borrows = copy.getBorrows();
+    private boolean checkBookCopiesAreBorrowed(long bookId) {
+        List<Copy> existingCopies = bookDao.findOne(bookId).getCopies();
+        List<Borrow> existingBorrows = new ArrayList<>();
+        if (existingCopies.isEmpty()) {
+            return false;
+        } else {
+            for (Copy copy : existingCopies) {
+                List<Borrow> borrows = copy.getBorrows();
 
-              System.out.print("Borrows: ");
-              if(!borrows.isEmpty()){
-                  for(Borrow borrow: borrows){
-                      System.out.println("Id: " + borrow.getId() + " is finished? " + borrow.getUntilDate());
-                      Optional<LocalDate> borrowUntilDate = ofNullable(borrow.getUntilDate());
-                      if(borrowUntilDate.isPresent()){
-                          existingBorrows.add(borrow);
-                      }
-                  }
-              }
-          }
-       }
+                System.out.print("Borrows: ");
+                if (!borrows.isEmpty()) {
+                    for (Borrow borrow : borrows) {
+                        System.out.println("Id: " + borrow.getId() + " is finished? " + borrow.getUntilDate());
+                        Optional<LocalDate> borrowUntilDate = ofNullable(borrow.getUntilDate());
+                        if (borrowUntilDate.isPresent()) {
+                            existingBorrows.add(borrow);
+                        }
+                    }
+                }
+            }
+        }
 
-        if(!existingBorrows.isEmpty()){
+        if (!existingBorrows.isEmpty()) {
             return true;
         } else {
             return false;

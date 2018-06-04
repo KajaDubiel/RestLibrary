@@ -21,29 +21,29 @@ public class BookController {
     @Autowired
     BookMapper bookMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value="/getBooks")
-    public List<BookDto> getBooks(){
+    @RequestMapping(method = RequestMethod.GET, value = "/getBooks")
+    public List<BookDto> getBooks() {
         return bookMapper.mapToBookDtoList(bookService.getAllBooks());
     }
 
     //handle null pointer exception
     @RequestMapping(method = RequestMethod.GET, value = "/getBook")
-    public BookDto getBook(@RequestParam long bookId){
-            return bookMapper.mapToBookDto(bookService.getBook(bookId));
+    public BookDto getBook(@RequestParam long bookId) {
+        return bookMapper.mapToBookDto(bookService.getBook(bookId));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/deleteBook")
-    public void deleteBook(@RequestParam long bookId){
+    public void deleteBook(@RequestParam long bookId) {
         bookService.deleteBook(bookId);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/createBook", consumes = APPLICATION_JSON_VALUE)
-    public void createBook(@RequestBody BookDto bookDto){
-          bookService.createBook(bookMapper.mapToBook(bookDto));
+    public void createBook(@RequestBody BookDto bookDto) {
+        bookService.createBook(bookMapper.mapToBook(bookDto));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/updateBook", consumes = APPLICATION_JSON_VALUE)
-    public void updateBook(@RequestBody BookDto bookDto){
+    public void updateBook(@RequestBody BookDto bookDto) {
         bookService.updateBook(bookMapper.mapToBook(bookDto));
     }
 }

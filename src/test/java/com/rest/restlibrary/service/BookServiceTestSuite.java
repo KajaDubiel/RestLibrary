@@ -39,7 +39,7 @@ public class BookServiceTestSuite {
     BookService bookService;
 
     @Test
-    public void testSaveBook(){
+    public void testSaveBook() {
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
 
@@ -55,7 +55,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void getBook(){
+    public void getBook() {
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         bookService.createBook(book);
@@ -72,7 +72,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void getAllBooks(){
+    public void getAllBooks() {
         //Given
         Book book1 = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         Book book2 = new Book("Pan Tadeusz", "Adam Mickiewicz", 1970, "813837841");
@@ -98,7 +98,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void testUpdateBook(){
+    public void testUpdateBook() {
         //Given
         Book book1 = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         Book book2 = new Book("Pan Tadeusz", "Adam Mickiewicz", 1970, "813837841");
@@ -121,7 +121,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void testDeleteBook(){
+    public void testDeleteBook() {
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         bookDao.save(book);
@@ -133,7 +133,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void testDeleteBookHavingCopyAndNotExistingBorrow() throws RuntimeException{
+    public void testDeleteBookHavingCopyAndNotExistingBorrow() throws RuntimeException {
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         Copy copy = new Copy(book, "54321");
@@ -161,7 +161,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void testShouldNotDeleteBookBecauseBorrowExists(){
+    public void testShouldNotDeleteBookBecauseBorrowExists() {
         //Given
         Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         Copy copy = new Copy(book, "54321");
@@ -178,9 +178,9 @@ public class BookServiceTestSuite {
         long borrowId = borrow.getId();
 
         //When
-        try{
+        try {
             bookService.deleteBook(bookId);
-        } catch(RuntimeException e){
+        } catch (RuntimeException e) {
 
         }
 
