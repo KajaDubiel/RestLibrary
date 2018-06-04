@@ -1,7 +1,13 @@
 package com.rest.restlibrary.service;
 
 import com.rest.restlibrary.data.Book;
+import com.rest.restlibrary.data.Borrow;
+import com.rest.restlibrary.data.Copy;
+import com.rest.restlibrary.data.Reader;
 import com.rest.restlibrary.data.dao.BookDao;
+import com.rest.restlibrary.data.dao.BorrowDao;
+import com.rest.restlibrary.data.dao.CopyDao;
+import com.rest.restlibrary.data.dao.ReaderDao;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +25,15 @@ public class BookServiceTestSuite {
 
     @Autowired
     BookDao bookDao;
+
+    @Autowired
+    CopyDao copyDao;
+
+    @Autowired
+    ReaderDao readerDao;
+
+    @Autowired
+    BorrowDao borrowDao;
 
     @Autowired
     BookService bookService;
@@ -114,5 +130,67 @@ public class BookServiceTestSuite {
         bookService.deleteBook(bookId);
         //Then
         Assert.assertNull(bookDao.findOne(bookId));
+    }
+
+    @Test
+    public void testDeleteBookHavingCopyAndNotExistingBorrow() throws RuntimeException{
+        //Given
+        Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
+        Copy copy = new Copy(book, "54321");
+        Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
+        bookDao.save(book);
+        copyDao.save(copy);
+        readerDao.save(reader);
+
+        long bookId = book.getId();
+        long readerId = reader.getId();
+        Borrow borrow = new Borrow(reader, copy);
+        borrowDao.save(borrow);
+
+        borrow.returnCopy();
+        borrowDao.save(borrow);
+
+        //When
+        bookService.deleteBook(bookId);
+
+        //Then
+        Assert.assertNull(bookDao.findOne(bookId));
+
+        //CleanUp
+        readerDao.delete(readerId);
+    }
+
+    @Test
+    public void testShouldNotDeleteBookBecauseBorrowExists(){
+        //Given
+        Book book = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
+        Copy copy = new Copy(book, "54321");
+        Reader reader = new Reader("Adam", "Kowalski", LocalDate.of(1967, 4, 12));
+        bookDao.save(book);
+        copyDao.save(copy);
+        readerDao.save(reader);
+
+        long bookId = book.getId();
+        long copyId = copy.getId();
+        long readerId = reader.getId();
+        Borrow borrow = new Borrow(reader, copy);
+        borrowDao.save(borrow);
+        long borrowId = borrow.getId();
+
+        //When
+        try{
+            bookService.deleteBook(bookId);
+        } catch(RuntimeException e){
+
+        }
+
+        //Then
+        Assert.assertNotNull(bookDao.findOne(bookId));
+
+        //CleanUp
+        borrowDao.delete(borrowId);
+        readerDao.delete(readerId);
+        copyDao.delete(copyId);
+        bookDao.delete(bookId);
     }
 }

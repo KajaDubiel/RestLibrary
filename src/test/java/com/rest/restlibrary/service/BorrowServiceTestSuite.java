@@ -68,7 +68,7 @@ public class BorrowServiceTestSuite {
 
 
     @Test
-    public void testCreateBorrow(){
+    public void testCreateBorrow() {
         //Given
 
         //When

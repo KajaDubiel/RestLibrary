@@ -10,29 +10,6 @@ import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-//@NamedNativeQueries({
-//        @NamedNativeQuery(
-//                name = "Book.retrieveBooks",
-//                query = "select b.author, b.title, b.release_year, b.isbn, copy.id, copy.inventory_number " +
-//                        "from book b " +
-//                        "right join copy " +
-//                        "on b.id = copy.book_id;",
-//                resultClass = Book.class
-//        )
-//,
-//
-//        @NamedNativeQuery(
-//                name = "Book.retrieveOneBookById",
-//                query = "select b.author, b.title, b.release_year, b.isbn, copy.id, copy.inventory_number " +
-//                        "from book b " +
-//                        "right join copy " +
-//                        "on b.id = copy.book_id " +
-//                        "where b.id = 5;",
-//                resultClass = Book.class
-//        )
-//})
-
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

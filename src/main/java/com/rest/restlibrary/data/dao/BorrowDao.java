@@ -13,5 +13,9 @@ public interface BorrowDao extends CrudRepository<Borrow, Long>{
     @Override
     List<Borrow> findAll();
 
+    List<Borrow> findAllByCopyId(long copyId);
+
+    void deleteByCopyId(long copyId);
+
     //List<Borrow> findAllByUntilDate();
 }

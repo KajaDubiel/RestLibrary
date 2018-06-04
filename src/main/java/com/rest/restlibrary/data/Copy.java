@@ -36,7 +36,7 @@ public class Copy {
     @OneToMany(
             targetEntity = Borrow.class,
             mappedBy = "copy",
-            fetch = FetchType.LAZY)//lazy
+            fetch = FetchType.EAGER)//lazy
     private List<Borrow> borrows;
 
     public Copy(Book book, String inventoryNumber) {
