@@ -33,8 +33,8 @@ public class CopyServiceTestSuite {
 
         //When
         bookService.createBook(book);
-        copyService.createCopy(copy);
         long bookId = book.getId();
+        copyService.createCopy(copy,bookId);
         long copyId = copy.getId();
 
         //Then
@@ -52,8 +52,9 @@ public class CopyServiceTestSuite {
         Copy copy = new Copy(book, "12345");
 
         bookService.createBook(book);
-        copyService.createCopy(copy);
         long bookId = book.getId();
+        copyService.createCopy(copy, bookId);
+
         long copyId = copy.getId();
 
         //When
@@ -75,9 +76,10 @@ public class CopyServiceTestSuite {
         Copy copy2 = new Copy(book, "12345");
 
         bookService.createBook(book);
-        copyService.createCopy(copy1);
-        copyService.createCopy(copy2);
         long bookId = book.getId();
+        copyService.createCopy(copy1, bookId);
+        copyService.createCopy(copy2, bookId);
+
         long copy1Id = copy1.getId();
         long copy2Id = copy2.getId();
 
@@ -100,8 +102,9 @@ public class CopyServiceTestSuite {
         Copy copy = new Copy(book, "54321");
 
         bookService.createBook(book);
-        copyService.createCopy(copy);
         long bookId = book.getId();
+        copyService.createCopy(copy, bookId);
+
         Long copyId = copy.getId();
 
         Copy updated = new Copy(copyId, book, "updated1324", new ArrayList<>());

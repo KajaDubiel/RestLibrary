@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 //@JsonIgnoreProperties(ignoreUnknown = true)
 public class BookDto {
     private long id;

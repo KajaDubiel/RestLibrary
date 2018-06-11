@@ -31,7 +31,6 @@ public class Copy {
     @Column(name = "inventory_number")
     private String inventoryNumber;
 
-
     @JsonIgnore
     @OneToMany(
             targetEntity = Borrow.class,
@@ -49,5 +48,7 @@ public class Copy {
         borrows.add(borrow);
     }
 
-
+    public void addBook(Book book){
+        this.book = book;
+    }
 }
