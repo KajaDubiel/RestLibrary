@@ -72,7 +72,7 @@ public class BookServiceTestSuite {
     }
 
     @Test
-    public void getAllBooks() {
+    public void testGetAllBooks() {
         //Given
         Book book1 = new Book("Ogniem i mieczem", "Henryk Sienkiewicz", 1982, "813287481");
         Book book2 = new Book("Pan Tadeusz", "Adam Mickiewicz", 1970, "813837841");
@@ -147,8 +147,10 @@ public class BookServiceTestSuite {
         Borrow borrow = new Borrow(reader, copy);
         borrowDao.save(borrow);
 
+
         borrow.returnCopy();
         borrowDao.save(borrow);
+
 
         //When
         bookService.deleteBook(bookId);
@@ -157,6 +159,7 @@ public class BookServiceTestSuite {
         Assert.assertNull(bookDao.findOne(bookId));
 
         //CleanUp
+
         readerDao.delete(readerId);
     }
 
@@ -188,6 +191,7 @@ public class BookServiceTestSuite {
         Assert.assertNotNull(bookDao.findOne(bookId));
 
         //CleanUp
+        borrow.returnCopy();
         borrowDao.delete(borrowId);
         readerDao.delete(readerId);
         copyDao.delete(copyId);
