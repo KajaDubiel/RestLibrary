@@ -28,8 +28,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile('org.springframework.boot:spring-boot-starter-validation')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	runtime('mysql:mysql-connector-java')
-	//compile('org.postgresql:postgresql')
+	//runtime('mysql:mysql-connector-java')
+	compile('org.postgresql:postgresql')
 	compileOnly('org.projectlombok:lombok')
 
 	compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.0')
