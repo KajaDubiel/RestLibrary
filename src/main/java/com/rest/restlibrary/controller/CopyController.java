@@ -34,4 +34,9 @@ public class CopyController {
     public List<CopyDto> getCopies(@RequestParam long bookId){
         return copyMapper.mapToCopyDtosList(copyService.getCopiesByBookId(bookId));
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getBorrowedCopies")
+    public List<CopyDto> getBorrowedCopies(@RequestParam long readerId){
+        return copyMapper.mapToCopyDtosList(copyService.getBorrowedCopiesByReaderId(readerId));
+    }
 }

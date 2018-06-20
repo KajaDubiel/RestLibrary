@@ -199,7 +199,7 @@ public class ReaderServiceTestSuite {
         long copyId = copy.getId();
         long readerId = reader.getId();
 
-        borrowService.returnBorrow(borrow);
+        borrowService.returnBorrow(readerId, copy.getInventoryNumber());
 
         //When
         readerService.deleteReader(readerId);

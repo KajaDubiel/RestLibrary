@@ -23,7 +23,7 @@ public class Copy {
     @NotNull
     private long id;
 
-    @JsonIgnore
+    @JsonIgnore//
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;

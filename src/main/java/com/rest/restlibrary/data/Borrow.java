@@ -1,5 +1,6 @@
 package com.rest.restlibrary.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +30,12 @@ public class Borrow {
     @Column(name = "until_date")
     private LocalDate untilDate = fromDate.plusDays(30);
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "copy_id")
     private Copy copy;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "reader_id")
     private Reader reader;

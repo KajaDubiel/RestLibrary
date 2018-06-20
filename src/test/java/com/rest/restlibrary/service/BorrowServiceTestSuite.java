@@ -298,7 +298,7 @@ public class BorrowServiceTestSuite {
         long borrowId = borrow.getId();
 
         //When
-        borrowService.returnBorrow(borrow);
+        borrowService.returnBorrow(readerId, "54321");
 
         //Then
         Assert.assertNull(borrowDao.findOne(borrowId).getUntilDate());

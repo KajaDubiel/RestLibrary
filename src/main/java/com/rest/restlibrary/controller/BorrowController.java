@@ -29,4 +29,9 @@ public class BorrowController {
     public List<BorrowDto> getBorrows(){
         return borrowMapper.mapToBorrowDtoList(borrowService.getBorrows());
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value="/returnBorrow")
+    public void returnBorrow(@RequestParam long readerId, @RequestParam String inventoryNumber){
+        borrowService.returnBorrow(readerId, inventoryNumber);
+    }
 }
