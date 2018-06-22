@@ -158,12 +158,14 @@ public class BorrowService {
         Reader reader = readerDao.findOne(readerId);
         System.out.println("From private: readerid: " + readerId + " invnum: " + inventoryNumber);
         List<Borrow> borrows = reader.getBorrows();
-        Borrow foundBorrow = null;
+        Borrow foundBorrow = null;//nie znalazł zadnego
 
         for (Borrow borrow : borrows) {
             Optional<LocalDate> untilDate = Optional.ofNullable(borrow.getUntilDate());
             if (untilDate.isPresent()) {
                 System.out.println("until date is present, borrow id :" + borrow.getId());
+
+                System.out.println("Borrow equals: " + borrow.getCopy().getInventoryNumber() + " equals >>" + inventoryNumber + "<< " + ">>" +  borrow.getCopy().getInventoryNumber().equals(inventoryNumber));
 
                 if (borrow.getCopy().getInventoryNumber().equals(inventoryNumber)) {
                     System.out.println("found borrow!");
