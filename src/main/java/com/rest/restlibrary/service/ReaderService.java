@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReaderService {
@@ -51,6 +52,17 @@ public class ReaderService {
             readerDao.delete(readerId);
         }
 
+    }
+
+    public List<Borrow> getReaderActiveBorrows(Reader reader){
+        List<Borrow> readerBorrows = reader.getBorrows();
+        List<Borrow> activeBorrows = readerBorrows.stream()
+                .filter(b-> {
+                    Optional<LocalDate> untilDate = Optional.ofNullable(b.getUntilDate());
+                    return untilDate.isPresent();
+                })
+                .collect(Collectors.toList());
+        return activeBorrows;
     }
 
     private boolean checkReaderHasUnfinishedBorrows(long readerId) {

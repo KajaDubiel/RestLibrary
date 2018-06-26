@@ -8,6 +8,7 @@ import com.rest.restlibrary.data.dao.BookDao;
 import com.rest.restlibrary.data.dao.BorrowDao;
 import com.rest.restlibrary.data.dao.CopyDao;
 import com.rest.restlibrary.data.dao.ReaderDao;
+import com.rest.restlibrary.domain.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,12 @@ public class BorrowService {
     @Autowired
     CopyDao copyDao;
 
+    @Autowired
+    ReaderService readerService;
+
+    @Autowired
+    SimpleEMailService simpleEMailService;
+
     public Borrow createBorrow(long bookId, long readerId) {//???
         Reader reader = readerDao.findOne(readerId);
 
@@ -44,13 +51,22 @@ public class BorrowService {
             copyDao.save(copy);
             readerDao.save(reader);
             borrowDao.save(borrow);
+
+            List<Borrow> activeBorrows = readerService.getReaderActiveBorrows(reader);
+
+            Optional<String> readerMail = Optional.ofNullable(reader.getReaderEmail());
+            if(readerMail.isPresent()){
+                Mail mail = new Mail(reader.getReaderEmail(), "New borrowing registered", "Hello " + reader.getFirstName() + "!\nYou borrowed new copy: \"" + copy.getBook().getTitle() + "\" author: " + copy.getBook().getAuthor() + ", inventory number: " + copy.getInventoryNumber() + ". Please remember to return your copy before " + borrow.getUntilDate() + ". Total amount of your rented books equals: " + activeBorrows.size() + "\nThank you for visiting our library", "kaja.dubiel@gmail.com");
+
+                simpleEMailService.send(mail);
+            }
             return borrow;
         } else {
             throw new RuntimeException("Cannot create borrow propably there are no copies available");
         }
     }
 
-    private List<Copy> findAvailableCopies(long bookId) {//wynik wogóle nie jest wiarygodny!
+    private List<Copy> findAvailableCopies(long bookId) {
         List<Copy> copies = copyDao.findAllByBookId(bookId);
         List<Copy> availableCopies = new ArrayList<>();
         //List<Borrow> activeBorrows = new ArrayList<>();
@@ -74,38 +90,8 @@ public class BorrowService {
                 }
 
             }
-
-
         }
 
-
-
-//        for(Copy copy: copies){
-//            System.out.println("Checking copy inventNUm: " + copy.getInventoryNumber());
-//            List<Borrow> borrows = copy.getBorrows();
-//            System.out.println("This copy has" + borrows.size() + " on borrows list");
-//            if(borrows.isEmpty()){
-//                availableCopies.add(copy);
-//                System.out.println("Copy has no borrows");
-//            } else{
-//                borrows.stream()//tego nie robi - jedną wypożycza a potem się sypie
-//                        .forEach(borrow -> {
-//                            Optional<LocalDate> untilDate = Optional.ofNullable(borrow.getUntilDate());
-//                            if(untilDate.isPresent()){
-//                                System.out.println("Checking borrow with id: " + borrow.getId() + " is this borrow finished?: " + untilDate);
-//                                activeBorrows.add(borrow);
-//                            } else{
-//                                System.out.println("Until date is null");
-//
-//                            }
-//                        });
-//            }
-//            Copy fakeCopy = new Copy(copy.getBook(), copy.getInventoryNumber());
-//            if(activeBorrows.size()==0 && (!availableCopies.contains(fakeCopy))){//?
-//                System.out.println("Adding copy");
-//                availableCopies.add(copy);
-//            }
-//        }
         return availableCopies;
     }
 
@@ -165,7 +151,7 @@ public class BorrowService {
             if (untilDate.isPresent()) {
                 System.out.println("until date is present, borrow id :" + borrow.getId());
 
-                System.out.println("Borrow equals: " + borrow.getCopy().getInventoryNumber() + " equals >>" + inventoryNumber + "<< " + ">>" +  borrow.getCopy().getInventoryNumber().equals(inventoryNumber));
+                System.out.println("Borrow equals: " + borrow.getCopy().getInventoryNumber() + " equals >>" + inventoryNumber + "<< " + ">>" + borrow.getCopy().getInventoryNumber().equals(inventoryNumber));
 
                 if (borrow.getCopy().getInventoryNumber().equals(inventoryNumber)) {
                     System.out.println("found borrow!");
